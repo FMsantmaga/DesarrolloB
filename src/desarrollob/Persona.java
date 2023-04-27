@@ -11,7 +11,8 @@ import java.util.Stack;
  *
  * @author alumno
  */
-public class Persona  implements Energetico{
+public class Persona implements Energetico {
+
     private String nombre;
     private Double capacidadVejiga;
     private Double estadoVejiga;
@@ -21,30 +22,33 @@ public class Persona  implements Energetico{
     public Persona(String nombre, Double capacidadVejiga) {
         this.nombre = nombre;
         this.capacidadVejiga = capacidadVejiga;
-        this.estadoVejiga=0.0;
-        this.energiaActual=100;
+        this.estadoVejiga = 0.0;
+        this.energiaActual = 100;
     }
-    
-    public void addTarea(Accion a){
-    tareasPendientes.push(a);
+
+    public void addTarea(Accion a) {
+        tareasPendientes.push(a);
     }
-    
+
     public Integer hacerTareas() {
         int contador = 0;
-        while (energiaActual > 0) {
-            if (energiaActual - tareasPendientes.peek().getEnergia() >= 0) {
-                energiaActual -= tareasPendientes.peek().getEnergia();
-                tareasPendientes.pop();
-                contador++;
-            }
+        while (!tareasPendientes.isEmpty()) {
+            while (energiaActual > 0) {
+                if (energiaActual - tareasPendientes.peek().getEnergia() >= 0) {
+                    energiaActual -= tareasPendientes.peek().getEnergia();
+                    tareasPendientes.pop();
+                    contador++;
+                }
 
+            }
         }
         return contador;
     }
 
-    public void vaciarVejiga(){
-    this.estadoVejiga=0.0;}
-    
+    public void vaciarVejiga() {
+        this.estadoVejiga = 0.0;
+    }
+
     public Double beber(Bebible a) {
         double vejiga;
         if (estadoVejiga + a.getLitros() <= this.capacidadVejiga) {
@@ -52,16 +56,14 @@ public class Persona  implements Energetico{
         } else {
             estadoVejiga = capacidadVejiga;
         }
-        return estadoVejiga += a.getLitros();
+        if(energiaActual+a.getEnergia()>100){energiaActual=100;}
+        else{energiaActual+=a.getEnergia();}
+        return estadoVejiga;
     }
 
     @Override
     public Integer getEnergia() {
-    return this.energiaActual;}
+        return this.energiaActual;
+    }
 
-   
-
-   
-    
-    
 }
